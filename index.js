@@ -12,8 +12,8 @@ let context;
 let speed = 0.01;
 let jitter = 0.001;
 let directionChangeRate = 0.001;
-let VelocityX= (Math.random() - 0.5) * speed;
-let VelocityY= (Math.random() - 0.5) * speed;
+let VelocityX= (Math.random()) * speed;
+let VelocityY= (Math.random()) * speed;
 
 let rockImg= new Image();
 rockImg.src="./Assets/Rock.png"
@@ -26,7 +26,7 @@ let paperHeight= 23;
 let paperWidth= 26;
 
 let scissorImg= new Image();
-scissorImg.src="./assets/Scissor.png"
+scissorImg.src="./Assets/Scissor.png"
 let scissorHeight= 27;
 let scissorWidth= 29;
 
