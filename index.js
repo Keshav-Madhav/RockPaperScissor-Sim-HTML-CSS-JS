@@ -9,64 +9,28 @@ let boardWidth=400;
 let boardHeight=670;
 let context;
 
-let VelocityX;
-let VelocityY;
 let speed = 0.01;
 let jitter = 0.001;
 let directionChangeRate = 0.001;
-
+let VelocityX= (Math.random() - 0.5) * speed;
+let VelocityY= (Math.random() - 0.5) * speed;
 
 let rockImg= new Image();
 rockImg.src="./Assets/Rock.png"
 let rockHeight= 18;
 let rockWidth= 20;
-let rockX;
-let rockY;
-let rock = {
-    x: Math.random() * boardWidth,
-    y: Math.random() * boardHeight,
-    width: rockWidth,
-    height: rockHeight,
-    velocityX: VelocityX,
-    velocityY: VelocityY,
-    image: rockImg
-};
 
 let paperImg= new Image();
 paperImg.src= "./Assets/Paper.png"
 let paperHeight= 23;
 let paperWidth= 26;
-let paperX;
-let paperY;
-let paper = {
-    x: Math.random() * boardWidth,
-    y: Math.random() * boardHeight,
-    width: paperWidth,
-    height: paperHeight,
-    velocityX: VelocityX,
-    velocityY: VelocityY,
-    image: paperImg
-};
 
 let scissorImg= new Image();
 scissorImg.src="./assets/Scissor.png"
 let scissorHeight= 27;
 let scissorWidth= 29;
-let scissorX;
-let scissorY;
-let scissor = {
-    x: Math.random() * boardWidth,
-    y: Math.random() * boardHeight,
-    width: scissorWidth,
-    height: scissorHeight,
-    velocityX: VelocityX,
-    velocityY: VelocityY,
-    image: scissorImg
-};
 
 let objects=[];
-
-let winnner;
 
 let startButton = document.getElementById("start");
 startButton.addEventListener("click", startSimulation);
@@ -94,8 +58,61 @@ function update(){
         context.drawImage(object.image, object.x, object.y, object.width, object.height);
     }
 
+    // Check for collisions between objects
+    for (let i = 0; i < objects.length; i++) {
+        for (let j = i + 1; j < objects.length; j++) {
+            let a = objects[i];
+            let b = objects[j];
+            if (detectCollision(a, b)) {
+                if ((a.type === "rock" && b.type === "scissor") || (a.type === "scissor" && b.type === "rock")) {
+                    // Rock beats scissors
+                    if (a.type === "scissor") {
+                        changeProperties(a,"rock");
+                    } else {
+                        changeProperties(b,"rock");
+                    }
+                } else if ((a.type === "paper" && b.type === "rock") || (a.type === "rock" && b.type === "paper")) {
+                    // Paper beats rock
+                    if (a.type === "rock") {
+                        changeProperties(a,"paper");
+                    } else {
+                        changeProperties(b,"paper");
+                    }
+                } else if ((a.type === "scissor" && b.type === "paper") || (a.type === "paper" && b.type === "scissor")) {
+                    // Scissors beat paper
+                    if (a.type === "paper") {
+                        changeProperties(a,"scissor");
+                    } else {
+                        changeProperties(b,"scissor");
+                    }
+                }
+            }
+        }
+    }
+
     requestAnimationFrame(update);
 }
+
+function changeProperties(object, newType) {
+    // Set the type property
+    object.type = newType;
+
+    // Set the image, width, and height properties based on the new type
+    if (newType === "rock") {
+        object.image = rockImg;
+        object.width = rockWidth;
+        object.height = rockHeight;
+    } else if (newType === "paper") {
+        object.image = paperImg;
+        object.width = paperWidth;
+        object.height = paperHeight;
+    } else if (newType === "scissor") {
+        object.image = scissorImg;
+        object.width = scissorWidth;
+        object.height = scissorHeight;
+    }
+}
+
 
 function startSimulation() {
     let numRocks = parseInt(document.getElementById("rockInp").value);
@@ -107,7 +124,6 @@ function startSimulation() {
     // Call the spawnObjects function with the new values
     spawnObjects(numRocks, numPapers, numScissors);
 }
-
 
 function spawnObjects(numRocks, numPapers, numScissors) {
     let spawnAreaSize = 100;
@@ -122,47 +138,49 @@ function spawnObjects(numRocks, numPapers, numScissors) {
 
     // Create the rock objects
     for (let i = 0; i < numRocks; i++) {
-        rock = {
+        let object = {
             x: rockSpawnAreaX + Math.random() * spawnAreaSize,
             y: rockSpawnAreaY + Math.random() * spawnAreaSize,
             width: rockWidth,
             height: rockHeight,
-            velocityX: 0,
-            velocityY: 0,
-            image: rockImg
+            velocityX: (Math.random() - 0.5) * speed,
+            velocityY: (Math.random() - 0.5) * speed,
+            image: rockImg,
+            type: "rock"
         };
-        objects.push(rock);
+        objects.push(object);
     }
 
     // Create the paper objects
     for (let i = 0; i < numPapers; i++) {
-        paper = {
+        let object = {
             x: paperSpawnAreaX + Math.random() * spawnAreaSize,
             y: paperSpawnAreaY + Math.random() * spawnAreaSize,
             width: paperWidth,
             height: paperHeight,
-            velocityX: 0,
-            velocityY: 0,
-            image: paperImg
+            velocityX: (Math.random() - 0.5) * speed,
+            velocityY: (Math.random() - 0.5) * speed,
+            image: paperImg,
+            type: "paper"
         };
-        objects.push(paper);
+        objects.push(object);
     }
 
     // Create the scissor objects
     for (let i = 0; i < numScissors; i++) {
-        scissor = {
+        let object = {
             x: scissorSpawnAreaX + Math.random() * spawnAreaSize,
             y: scissorSpawnAreaY + Math.random() * spawnAreaSize,
             width: scissorWidth,
             height: scissorHeight,
-            velocityX: 0,
-            velocityY: 0,
-            image: scissorImg
+            velocityX: (Math.random() - 0.5) * speed,
+            velocityY: (Math.random() - 0.5) * speed,
+            image: scissorImg,
+            type: "scissor"
         };
-        objects.push(scissor);
+        objects.push(object);
     }
 }
-
 
 function updatePosition(object, deltaTime) {
 
