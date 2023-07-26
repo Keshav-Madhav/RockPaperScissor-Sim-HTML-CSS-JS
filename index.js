@@ -126,15 +126,50 @@ function startSimulation() {
 }
 
 function spawnObjects(numRocks, numPapers, numScissors) {
-    let spawnAreaSize = 100;
+    // Check if random spawning is enabled
+    let isRandomSpawning = document.getElementById("random").checked;
+
+    // Set the size of each spawn area based on the number of objects being spawned
+    let rockSpawnAreaSize = Math.min(300, numRocks * 2);
+    let paperSpawnAreaSize = Math.min(300, numPapers * 2);
+    let scissorSpawnAreaSize = Math.min(300, numScissors * 2);
 
     // Set the position of the spawn area for each type of object
-    let rockSpawnAreaX = 30;
-    let rockSpawnAreaY = 130;
-    let paperSpawnAreaX = 260;
-    let paperSpawnAreaY = 130;
-    let scissorSpawnAreaX = 150;
-    let scissorSpawnAreaY = 330;
+    let rockSpawnAreaX, rockSpawnAreaY;
+    let paperSpawnAreaX, paperSpawnAreaY;
+    let scissorSpawnAreaX, scissorSpawnAreaY;
+
+    if (isRandomSpawning) {
+        // Set the distance between the spawn areas
+        let spawnAreaDistance = 100;
+
+        // Set the position of the first spawn area for each type of object
+        rockSpawnAreaX = Math.random() * (boardWidth - rockSpawnAreaSize);
+        rockSpawnAreaY = Math.random() * (boardHeight - rockSpawnAreaSize);
+
+        // Set the position of the second spawn area for each type of object
+        do {
+            paperSpawnAreaX = Math.random() * (boardWidth - paperSpawnAreaSize);
+            paperSpawnAreaY = Math.random() * (boardHeight - paperSpawnAreaSize);
+        } while (Math.sqrt(Math.pow(paperSpawnAreaX - rockSpawnAreaX, 2) + Math.pow(paperSpawnAreaY - rockSpawnAreaY, 2)) < spawnAreaDistance);
+
+        // Set the position of the third spawn area for each type of object
+        do {
+            scissorSpawnAreaX = Math.random() * (boardWidth - scissorSpawnAreaSize);
+            scissorSpawnAreaY = Math.random() * (boardHeight - scissorSpawnAreaSize);
+        }while ((Math.sqrt(Math.pow(scissorSpawnAreaX - rockSpawnAreaX, 2) + Math.pow(scissorSpawnAreaY - rockSpawnAreaY, 2)) < spawnAreaDistance) || (Math.sqrt(Math.pow(scissorSpawnAreaX - paperSpawnAreaX, 2) + Math.pow(scissorSpawnAreaY - paperSpawnAreaY, 2)) < spawnAreaDistance));
+    } 
+    else {
+        // Use fixed spawning
+        rockSpawnAreaX = 30;
+        rockSpawnAreaY = 130;
+        paperSpawnAreaX = 260;
+        paperSpawnAreaY = 130;
+        scissorSpawnAreaX = 150;
+        scissorSpawnAreaY = 330;
+    }
+
+    let spawnAreaSize = 100;
 
     // Create the rock objects
     for (let i = 0; i < numRocks; i++) {
