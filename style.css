@@ -7,6 +7,7 @@ body{
     text-align: center;
 }
 
-#canvas{
-    background-color: rgb(70, 51, 15);
+#board{
+    margin-top: 20px;
+    background-color: wheat;
 }
