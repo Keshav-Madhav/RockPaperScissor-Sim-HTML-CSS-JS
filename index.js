@@ -68,13 +68,16 @@ let objects=[];
 
 let winnner;
 
+let startButton = document.getElementById("start");
+startButton.addEventListener("click", startSimulation);
+
 window.onload = function () {
     board = document.getElementById("board");
     board.width = boardWidth;
     board.height = boardHeight;
     context = board.getContext("2d");
 
-    spawnObjects();
+    spawnObjects(30,30,30);
 
     requestAnimationFrame(update);
 }
@@ -94,45 +97,66 @@ function update(){
     requestAnimationFrame(update);
 }
 
-function spawnObjects(){
+function startSimulation() {
+    let numRocks = parseInt(document.getElementById("rockInp").value);
+    let numPapers = parseInt(document.getElementById("PaperInp").value);
+    let numScissors = parseInt(document.getElementById("scissorInp").value);
+
+    objects = [];
+
+    // Call the spawnObjects function with the new values
+    spawnObjects(numRocks, numPapers, numScissors);
+}
+
+
+function spawnObjects(numRocks, numPapers, numScissors) {
+    let spawnAreaSize = 100;
+
+    // Set the position of the spawn area for each type of object
+    let rockSpawnAreaX = 50;
+    let rockSpawnAreaY = 50;
+    let paperSpawnAreaX = 250;
+    let paperSpawnAreaY = 50;
+    let scissorSpawnAreaX = 150;
+    let scissorSpawnAreaY = 300;
 
     // Create the rock objects
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < numRocks; i++) {
         rock = {
-            x: Math.random() * boardWidth,
-            y: Math.random() * boardHeight,
+            x: rockSpawnAreaX + Math.random() * spawnAreaSize,
+            y: rockSpawnAreaY + Math.random() * spawnAreaSize,
             width: rockWidth,
             height: rockHeight,
-            velocityX: (Math.random() - 0.5) * speed,
-            velocityY: (Math.random() - 0.5) * speed,
+            velocityX: 0,
+            velocityY: 0,
             image: rockImg
         };
         objects.push(rock);
     }
 
     // Create the paper objects
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < numPapers; i++) {
         paper = {
-            x: Math.random() * boardWidth,
-            y: Math.random() * boardHeight,
+            x: paperSpawnAreaX + Math.random() * spawnAreaSize,
+            y: paperSpawnAreaY + Math.random() * spawnAreaSize,
             width: paperWidth,
             height: paperHeight,
-            velocityX: (Math.random() - 0.5) * speed,
-            velocityY: (Math.random() - 0.5) * speed,
+            velocityX: 0,
+            velocityY: 0,
             image: paperImg
         };
         objects.push(paper);
     }
 
     // Create the scissor objects
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < numScissors; i++) {
         scissor = {
-            x: Math.random() * boardWidth,
-            y: Math.random() * boardHeight,
+            x: scissorSpawnAreaX + Math.random() * spawnAreaSize,
+            y: scissorSpawnAreaY + Math.random() * spawnAreaSize,
             width: scissorWidth,
             height: scissorHeight,
-            velocityX: (Math.random() - 0.5) * speed,
-            velocityY: (Math.random() - 0.5) * speed,
+            velocityX: 0,
+            velocityY: 0,
             image: scissorImg
         };
         objects.push(scissor);
