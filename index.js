@@ -129,12 +129,12 @@ function spawnObjects(numRocks, numPapers, numScissors) {
     let spawnAreaSize = 100;
 
     // Set the position of the spawn area for each type of object
-    let rockSpawnAreaX = 50;
-    let rockSpawnAreaY = 50;
-    let paperSpawnAreaX = 250;
-    let paperSpawnAreaY = 50;
+    let rockSpawnAreaX = 30;
+    let rockSpawnAreaY = 130;
+    let paperSpawnAreaX = 260;
+    let paperSpawnAreaY = 130;
     let scissorSpawnAreaX = 150;
-    let scissorSpawnAreaY = 300;
+    let scissorSpawnAreaY = 330;
 
     // Create the rock objects
     for (let i = 0; i < numRocks; i++) {
